@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+    <Servers>
+        <Server>
+            <Family>4</Family>
+            <Protocol>udp</Protocol>
+            <Ip></Ip>
+            <Port>3478</Port>
+        </Server>
+    </Servers>
+</Config>
