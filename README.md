@@ -18,6 +18,7 @@ MIT License.
 
 - (Optional) Install [DPDK](https://doc.dpdk.org/guides/linux_gsg/build_dpdk.html).
 - Install [SeaStar](https://github.com/scylladb/seastar#building-seastar) (set `Seastar_DPDK` flag to enable DPDK support).
+- Install OpenSSL package (libssl-dev on Ubuntu-based distros).
 - Install [uriparser](https://uriparser.github.io/).
 - Build ministun project with CMake.
 
