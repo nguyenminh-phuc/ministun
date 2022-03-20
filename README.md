@@ -4,7 +4,7 @@
 
 - High-performance Shared-nothing Design - [SeaStar](http://seastar.io/): sharded, cooperative, non-blocking, micro-task scheduled design.
 - Networking - [Intel DPDK](https://www.dpdk.org/): user-space TCP/IP stack, provide low-latency, high-throughput. Enjoy zero-copy, zero-lock, and zero-context-switch performance.
-- STUN server: implement [RFC 8489](https://datatracker.ietf.org/doc/html/rfc8489), Prometheus metric reporting, long-term and short-term credential mechanisms, fingerprint mechanism, DNS discovery, rate limiting by IP.
+- STUN server: implement [RFC 8489](https://datatracker.ietf.org/doc/html/rfc8489), Prometheus metric reporting, long-term and short-term credential mechanisms, fingerprint mechanism, DNS discovery, IP rate limiting.
 - STUN client.
 - Tests: implement test vectors from [RFC 5769](https://datatracker.ietf.org/doc/html/rfc5769), [RFC 8489](https://datatracker.ietf.org/doc/html/rfc8489#appendix-B) and [RFC Errata 8489](https://www.rfc-editor.org/errata/rfc8489).
 
@@ -34,8 +34,15 @@ Log levels: "trace", "debug", "info", "warn" or "error".
 - Run STUN client
 
 ```
-./stunclient --local-ip <local-ip> --server stun://<server-ip>:<server-port>
+./stunclient --local-ip <local-ip> --server <server-uri>
 ```
+
+`server-uri` can be
+
+    stun://<server-domain-name>:<server-port>
+    stun://<server-ip>:<server-port>
+
+`stuns` scheme is not supported.
 
 - Run tests: support CTest
 
