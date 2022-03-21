@@ -20,6 +20,8 @@ MIT License.
 - Install [SeaStar](https://github.com/scylladb/seastar#building-seastar) (set `Seastar_DPDK` flag to enable DPDK support).
 - Install OpenSSL package (libssl-dev on Ubuntu-based distros).
 - Install [uriparser](https://uriparser.github.io/).
+- Configure [HugePages](http://doc.dpdk.org/spp/setup/getting_started.html).
+- Tune [aio-max-nr](https://www.kernel.org/doc/Documentation/sysctl/fs.txt) if using linux-aio reactor backend.
 - Build ministun project with CMake.
 
 ## Getting Started
