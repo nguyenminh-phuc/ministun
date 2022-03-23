@@ -26,7 +26,7 @@ MIT License.
 
 ## Getting Started
 
-- Run STUN server
+### Run STUN server
 
 ```
 ./stunserver --log-level <level> --config <path-to-config-file>
@@ -36,7 +36,7 @@ Log levels: "trace", "debug", "info", "warn" or "error".
 
 To enable userspace network stack, add `--network-stack native --dpdk-pmd --dhcp true`.
 
-- Run STUN client
+### Run STUN client
 
 ```
 ./stunclient --local-ip <local-ip> --server <server-uri>
@@ -68,7 +68,9 @@ stunclient options:
   --server arg            server URI
 ```
 
-- Run tests: support CTest
+### Run tests:
+
+The project supports CTest.
 
 ## Sample config file
 
