@@ -34,18 +34,39 @@ MIT License.
 
 Log levels: "trace", "debug", "info", "warn" or "error".
 
+To enable userspace network stack, add `--network-stack native --dpdk-pmd --dhcp true`.
+
 - Run STUN client
 
 ```
 ./stunclient --local-ip <local-ip> --server <server-uri>
 ```
 
-`server-uri` can be
+server URI can be
 
     stun://<server-domain-name>:<server-port>
     stun://<server-ip>:<server-port>
 
 `stuns` scheme is not supported.
+
+Other options:
+
+```
+stunclient options:
+  -h [ --help ]           show help message
+  --help-seastar          show help message about seastar options
+  --help-loggers          print a list of logger names and exit
+  --log-level arg (=info) either "trace", "debug", "info", "warn" or "error"
+  --family arg (=4)       either "4" or "6" to specify the usage of INET or 
+                          INET6
+  --protocol arg (=udp)   either "udp" or "tcp"
+  --mechanism arg         either "ShortTerm" or "LongTerm"
+  --username arg          username
+  --username arg          password
+  --local-ip arg          local IP
+  --local-port arg        local port
+  --server arg            server URI
+```
 
 - Run tests: support CTest
 
