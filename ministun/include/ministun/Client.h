@@ -21,6 +21,8 @@ namespace ms {
 
     seastar::future<std::optional<BindingResult>> test_binding();
 
+    seastar::future<> close_gracefully() const;
+
   private:
     ClientConfig config_;
     seastar::semaphore limit_;

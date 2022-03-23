@@ -60,7 +60,7 @@ int main(int ac, char **av) {
     Utils::logger().set_level(level);
 
     const auto &configuration = app.configuration();
-    auto input = lw_shared_ptr<Input>();
+    auto input = make_lw_shared<Input>();
 
     return futurize_invoke([&, input] {
       if (configuration.count("mechanism")) {
@@ -73,11 +73,17 @@ int main(int ac, char **av) {
 
       return build_servers(family, protocol, *input->uri)
           .then([&, input](std::optional<std::vector<RemoteServer>> servers) {
-            if (!servers) return make_ready_future<lw_shared_ptr<Client>>();
+            if (!servers) {
+              MS_ERROR("Failed to build remote server list");
+              return make_ready_future<lw_shared_ptr<Client>>();
+            }
 
             return build_socket(family, protocol, local_ip_str, local_port, std::move(*servers))
                 .then([input](std::optional<ClientSocketBuilder::Result> result) {
-                  if (!result) return lw_shared_ptr<Client>{};
+                  if (!result) {
+                    MS_ERROR("Failed to build socket");
+                    return lw_shared_ptr<Client>{};
+                  }
 
                   ClientConfig config{
                       .socket = std::move(result->socket),
@@ -92,10 +98,12 @@ int main(int ac, char **av) {
       if (!client) return make_ready_future<int>(EXIT_FAILURE);
 
       return client->test_binding().then([client](std::optional<BindingResult> result) {
-        if (!result) return EXIT_FAILURE;
+        return client->close_gracefully().then([client, result] {
+          if (!result) return EXIT_FAILURE;
 
-        MS_INFO("\nLocal address: {}\nMapped address: {}", result->local_address, result->mapped_address);
-        return EXIT_SUCCESS;
+          MS_INFO("\nLocal address: {}\nMapped address: {}", result->local_address, result->mapped_address);
+          return EXIT_SUCCESS;
+        });
       });
     }).then_wrapped([](future<int> f) {
       try {

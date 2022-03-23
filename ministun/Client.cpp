@@ -12,6 +12,11 @@ namespace ms {
     return with_semaphore(limit_, 1, [this] {
       return do_with(Message{Header{Method::Binding, Class::Request}}, [this](Message &request) {
         return send_retry(request).then([this](std::optional<Message> response) -> std::optional<BindingResult> {
+          if (!response) {
+            MS_WARN("No response message");
+            return std::optional<BindingResult>{};
+          }
+
           std::optional<socket_address> address;
           if (auto xor_mapped_address = response->find<XorMappedAddressAttribute>())
             address = xor_mapped_address->address();
@@ -45,7 +50,7 @@ namespace ms {
                   BOOST_VERIFY(request.serialize(request_writer));
                   return config_.socket->send_request(request_writer.buffer())
                       .then([this, &result](std::unique_ptr<ClientSocket::Response> response) {
-                        if (!result) return stop_iteration::yes;
+                        if (!response) return stop_iteration::yes;
 
                         if (!config_.credential) {
                           result = std::move(response->message);
@@ -69,5 +74,9 @@ namespace ms {
             return nrvo;
           });
         });
+  }
+
+  future<> Client::close_gracefully() const {
+    return config_.socket->close_gracefully();
   }
 }

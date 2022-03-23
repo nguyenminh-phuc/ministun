@@ -75,7 +75,10 @@ namespace ms {
     UdpClientSocket(UdpClientSocket &&socket) noexcept:
         ClientSocket{Protocol::Udp, socket.local_address(), socket.remote_address()},
         max_retries_{socket.max_retries_}, timeout_{socket.timeout_} {
+      opened_ = socket.opened_;
       channel_ = std::move(socket.channel_);
+
+      socket.opened_ = false;
     }
 
     seastar::future<> close_gracefully() override;
@@ -117,6 +120,8 @@ namespace ms {
       connected_socket_ = std::move(socket.connected_socket_);
       read_stream_ = std::move(socket.read_stream_);
       write_stream_ = std::move(socket.write_stream_);
+
+      socket.opened_ = false;
     }
 
     seastar::future<> close_gracefully() override;
